@@ -1,25 +1,35 @@
 import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
 
-st.title("이차함수 y = a*x² 학습 앱 (설치 필요 없음)")
+st.title("이차함수 y = a*x^2 그래프 학습 앱")
 
-st.write("슬라이더로 a 값을 바꿔가며 그래프를 관찰하세요.")
+# a값 선택
+a = st.slider("a값을 선택하세요", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
 
-# a값 입력
-a = st.slider("a 값 선택", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
+# x값 생성
+x = np.linspace(-10, 10, 400)
+y = a * x**2
 
-# x, y값 계산
-x_values = list(range(-10, 11))  # -10부터 10까지 정수
-y_values = [a * (x**2) for x in x_values]
+# 그래프 그리기
+fig, ax = plt.subplots()
+ax.plot(x, y, label=f'y = {a}x^2')
+ax.axhline(0, color='black', linewidth=0.5)
+ax.axvline(0, color='black', linewidth=0.5)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_title("y = a*x^2")
+ax.grid(True)
+ax.legend()
 
-# 데이터 준비
-data = {"x": x_values, "y": y_values}
+st.pyplot(fig)
 
-# 차트 그리기
-st.line_chart(data={"y": y_values}, use_container_width=True)
+# a값에 대한 설명
+if a > 0:
+    st.write("a가 양수이므로 그래프는 위로 볼록입니다.")
+elif a < 0:
+    st.write("a가 음수이므로 그래프는 아래로 볼록입니다.")
+else:
+    st.write("a가 0이면 그래프는 x축 위의 직선입니다.")
 
-# 관찰 포인트 안내
-st.write("""
-- a > 0 : 그래프가 위로 볼록  
-- a < 0 : 그래프가 아래로 볼록  
-- |a|가 커질수록 그래프가 좁아지고, |a|가 작을수록 그래프가 넓어짐
-""")
+st.write("a의 절댓값이 클수록 그래프가 좁아지고, 작을수록 넓어집니다.")
