@@ -2,23 +2,25 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.title("이차함수 y = a*x^2 그래프 학습 앱")
+st.title("이차함수 y = a*(x-h)^2 + k 그래프 학습 앱")
 
-# a값 선택
+# 파라미터 입력
 a = st.slider("a값을 선택하세요", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
+h = st.slider("꼭짓점 x좌표 h", min_value=-10.0, max_value=10.0, value=0.0, step=0.1)
+k = st.slider("꼭짓점 y좌표 k", min_value=-10.0, max_value=10.0, value=0.0, step=0.1)
 
 # x값 생성
-x = np.linspace(-10, 10, 400)
-y = a * x**2
+x = np.linspace(-20, 20, 400)
+y = a * (x - h)**2 + k
 
 # 그래프 그리기
 fig, ax = plt.subplots()
-ax.plot(x, y, label=f'y = {a}x^2')
+ax.plot(x, y, label=f'y = {a}*(x-{h})^2 + {k}')
 ax.axhline(0, color='black', linewidth=0.5)
 ax.axvline(0, color='black', linewidth=0.5)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
-ax.set_title("y = a*x^2")
+ax.set_title("y = a*(x-h)^2 + k")
 ax.grid(True)
 ax.legend()
 
@@ -30,6 +32,7 @@ if a > 0:
 elif a < 0:
     st.write("a가 음수이므로 그래프는 아래로 볼록입니다.")
 else:
-    st.write("a가 0이면 그래프는 x축 위의 직선입니다.")
+    st.write("a가 0이면 그래프는 y=k인 직선입니다.")
 
 st.write("a의 절댓값이 클수록 그래프가 좁아지고, 작을수록 넓어집니다.")
+st.write(f"꼭짓점 위치: ({h}, {k})")
